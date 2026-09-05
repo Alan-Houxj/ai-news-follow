@@ -1,5 +1,9 @@
 # AI 时讯跟进
 
+![Agent Skill](https://img.shields.io/badge/Agent_Skill-ai--news-6366f1)
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)
+![Feishu](https://img.shields.io/badge/Feishu-%E9%A3%9E%E4%B9%A6-3370FF)
+
 **每天早上 8 点，一份帮你筛好、看完就能聊的 AI 日报，自动送到你的飞书。**
 
 你不是没时间刷新闻，你是没时间在一百条噪音里找出那三条真正重要的事。
