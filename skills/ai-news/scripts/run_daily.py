@@ -51,13 +51,11 @@ LARK = os.environ.get("LARK_CLI", "lark-cli")
 
 
 def _resolve_lark():
-    """定位 lark-cli 可执行文件。优先环境变量 LARK_CLI，其次 which，
-    最后探测 Windows npm 全局包内 exe（PATH 缺失时的兜底）。"""
+    """定位 lark-cli 可执行文件。
+    优先级：LARK_CLI 环境变量 → 真实 exe（Windows 上 npm 的 lark-cli 是 .CMD shim，
+    经 cmd.exe 输出 GBK 会损坏中文，必须优先用 exe）→ which → 常见安装位置。"""
     if os.environ.get("LARK_CLI"):
         return [os.environ["LARK_CLI"]]
-    exe = shutil.which(LARK) or shutil.which(LARK + ".exe")
-    if exe:
-        return [exe]
     guesses = [
         Path.home() / "AppData/Roaming/npm/node_modules/@larksuite/cli/bin/lark-cli.exe",
         Path("/usr/local/bin/lark-cli"),
@@ -66,6 +64,9 @@ def _resolve_lark():
     for g in guesses:
         if g.exists():
             return [str(g)]
+    exe = shutil.which(LARK) or shutil.which(LARK + ".exe")
+    if exe:
+        return [exe]
     return [LARK]
 
 
@@ -91,17 +92,29 @@ KNOWN_SOURCES = {"OpenAI", "DeepMind", "Anthropic", "HuggingFace",
 SOURCE_OPTIONS = list(KNOWN_SOURCES)
 
 
+def _decode(raw):
+    """自适应解码 lark-cli 输出：优先 UTF-8，失败回退 GBK（Windows 中文代码页）。"""
+    if not raw:
+        return ""
+    for enc in ("utf-8", "gbk"):
+        try:
+            return raw.decode(enc)
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("utf-8", errors="replace")
+
+
 def run(args):
     """执行 lark-cli 命令；对瞬时错误（如选项池更新后的索引延迟）间隔重试一次。"""
     for attempt in (1, 2):
-        r = subprocess.run(LARK_CMD + args, capture_output=True, text=True,
-                           encoding="utf-8", shell=False)
-        if r.returncode == 0 and '"ok": false' not in (r.stdout or ""):
-            return json.loads(r.stdout)
+        r = subprocess.run(LARK_CMD + args, capture_output=True, shell=False)
+        out, err = _decode(r.stdout), _decode(r.stderr)
+        if r.returncode == 0 and '"ok": false' not in out:
+            return json.loads(out)
         if attempt == 1:
             time.sleep(2)
         else:
-            print(r.stdout or r.stderr, file=sys.stderr)
+            print(out or err, file=sys.stderr)
             raise RuntimeError(f"command failed: {args[0]} {args[1]} ...")
 
 
