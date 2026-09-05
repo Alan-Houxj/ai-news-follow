@@ -93,12 +93,19 @@ python run_daily.py curated.json    # 写表格 + 卡片推送 + 云文档归档
 2. **用户授权**：`lark-cli auth login --recommend`（同样输出链接/二维码）→
    用户扫码确认，所需权限自动申请自动审批。从输出提取 `ou_` 开头的 open_id
 3. **给应用开通 bot 的 base/im 权限并发布**（漏掉会在最后一步报 access denied）：
-   运行 `lark-cli auth scopes`，输出带一个预填好所需权限的申请链接（console_url），
-   把链接发给用户点开、逐条开通——至少需要 base 字段/记录读写（base:field:read、
-   base:field:update、base:record:create、base:record:read）和 im 发消息
-   （选细粒度 `im:message:send_as_bot`，别选聚合 `im:message`，个人账号开不了）。
-   开通后到开发者后台「版本管理与发布」创建并发布一个版本，权限才生效。
-   可再跑一次 `lark-cli auth scopes` 确认没有剩余待开通项
+   先 `lark-cli whoami` 取 `appId`，再把下面链接发给用户，让用户浏览器打开、逐条开通：
+
+   ```text
+   https://open.feishu.cn/page/scope-apply?clientID=<appId>&scopes=base%3Afield%3Aread,base%3Afield%3Aupdate,base%3Arecord%3Acreate,base%3Arecord%3Aread,im%3Amessage%3Asend_as_bot
+   ```
+
+   需开通的权限：base 字段/记录读写（base:field:read、base:field:update、
+   base:record:create、base:record:read）和 im 发消息（细粒度 `im:message:send_as_bot`，
+   别选聚合 `im:message`，个人账号开不了）。开通后到开发者后台「版本管理与发布」
+   创建并发布一个版本，权限才生效。
+
+   注意：`auth scopes` 查的是 user 身份、不产出 bot 权限链接；若脚本报 access denied，
+   报错信息里会自带 `console_url`，直接用它最省事
 4. **建表（--as user，表归用户所有）**：
    ```bash
    lark-cli base +base-create --name "AI资讯库" --table-name "AI日报" --time-zone "Asia/Shanghai" --as user --fields '[

@@ -56,7 +56,7 @@ export LARK_CLI="C:\Users\<你>\AppData\Roaming\npm\node_modules\@larksuite\cli\
 - 申请了聚合权限 `im:message`，它捆绑"读全部群消息"等敏感子权限，个人账号开不了，整单失败 → 改用细粒度的 `im:message:send_as_bot`
 - 权限开通了但没发新版 → 再发布一版
 
-**最省事的做法**：跑 `lark-cli auth scopes`，报错信息里有预填好权限的申请链接（console_url），打开点开通，循环到 ok 为止。
+**最省事的做法**：脚本报 access denied 时，报错信息里自带预填好所需权限的申请链接（console_url），打开点开通、再发布一版即可。也可以自己拼：用 `lark-cli whoami` 取 appId，浏览器打开 `https://open.feishu.cn/page/scope-apply?clientID=<appId>&scopes=…` 逐条开通（scope 清单见 setup.md 第 ③ 步）。
 
 ## 5. Python 找不到 lark-cli（WinError 2）
 

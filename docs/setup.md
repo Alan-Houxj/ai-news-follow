@@ -48,11 +48,19 @@ lark-cli auth login --recommend
 
 **③ 给应用开通 bot 权限并发布**（漏掉会在最后一步报 access denied，如 `base:field:read`）：
 
+先取 AppID，再拼权限申请链接（把 `<AppID>` 换成你的值）：
+
 ```bash
-lark-cli auth scopes   # 输出带预填好所需权限的申请链接（console_url）
+lark-cli whoami   # 看 appId 字段
 ```
 
-点开 console_url 逐条开通——至少需要 base 字段/记录读写（base:field:read、base:field:update、base:record:create、base:record:read）和 im 发消息（选细粒度 `im:message:send_as_bot`，别选聚合 `im:message`，个人账号开不了）。开通后到「版本管理与发布」创建并发布一个版本，权限才生效。可再跑一次 `lark-cli auth scopes` 确认无剩余待开通项。
+```text
+https://open.feishu.cn/page/scope-apply?clientID=<AppID>&scopes=base%3Afield%3Aread,base%3Afield%3Aupdate,base%3Arecord%3Acreate,base%3Arecord%3Aread,im%3Amessage%3Asend_as_bot
+```
+
+浏览器打开链接，逐条开通——至少需要 base 字段/记录读写（base:field:read、base:field:update、base:record:create、base:record:read）和 im 发消息（细粒度 `im:message:send_as_bot`，别选聚合 `im:message`，个人账号开不了）。开通后到「版本管理与发布」创建并发布一个版本，权限才生效。
+
+> 说明：`auth scopes` 查的是 user 身份，不产出 bot 权限链接；若脚本报 access denied，报错信息里会自带 `console_url`，直接用它最省事。
 
 **④ 建表**（以你自己的身份，表归你所有；整条复制执行）：
 
