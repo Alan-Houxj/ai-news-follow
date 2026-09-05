@@ -1,0 +1,15 @@
+# 本地配置——含飞书表格/文档/用户坐标，绝不可入库（公开仓库尤其注意）
+**/config.json
+**/config.json.bak
+**/config.json.*.bak
+
+# 运行产物——每次执行重新生成
+**/items.json
+**/curated.json
+**/selection.json
+**/today_doc.xml
+
+# 通用
+*.bak
+__pycache__/
+*.pyc

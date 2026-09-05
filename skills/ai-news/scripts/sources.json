@@ -1,0 +1,93 @@
+{
+  "sources": [
+    {
+      "id": "openai_news",
+      "name": "OpenAI 官方新闻",
+      "type": "rss",
+      "url": "https://openai.com/news/rss.xml",
+      "network": "proxy",
+      "category": "前沿动态"
+    },
+    {
+      "id": "deepmind_blog",
+      "name": "Google DeepMind 博客",
+      "type": "rss",
+      "url": "https://deepmind.google/blog/rss.xml",
+      "network": "proxy",
+      "category": "前沿动态"
+    },
+    {
+      "id": "anthropic_news",
+      "name": "Anthropic 新闻",
+      "type": "sitemap",
+      "url": "https://www.anthropic.com/sitemap.xml",
+      "url_prefix": "https://www.anthropic.com/news/",
+      "network": "proxy",
+      "category": "前沿动态"
+    },
+    {
+      "id": "huggingface_blog",
+      "name": "Hugging Face 博客",
+      "type": "rss",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "network": "proxy",
+      "category": "前沿动态"
+    },
+    {
+      "id": "techcrunch_ai",
+      "name": "TechCrunch AI",
+      "type": "rss",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "network": "proxy",
+      "category": "产品动态"
+    },
+    {
+      "id": "theverge_ai",
+      "name": "The Verge AI",
+      "type": "rss",
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+      "network": "proxy",
+      "category": "产品动态"
+    },
+    {
+      "id": "mit_tr_ai",
+      "name": "MIT Tech Review AI",
+      "type": "rss",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+      "network": "proxy",
+      "category": "前沿动态"
+    },
+    {
+      "id": "hackernews_ai",
+      "name": "Hacker News AI 热帖",
+      "type": "hn",
+      "url": "https://hn.algolia.com/api/v1/search",
+      "network": "direct",
+      "category": "社区热点"
+    },
+    {
+      "id": "infoq",
+      "name": "InfoQ 中文",
+      "type": "rss",
+      "url": "https://www.infoq.cn/feed",
+      "network": "direct",
+      "category": "中文资讯"
+    },
+    {
+      "id": "arxiv_csai",
+      "name": "arXiv cs.AI 新论文",
+      "type": "arxiv",
+      "url": "http://export.arxiv.org/api/query?search_query=cat:cs.AI&sortBy=submittedDate&sortOrder=descending&max_results=30",
+      "network": "proxy",
+      "category": "论文速递"
+    },
+    {
+      "id": "arxiv_cscl",
+      "name": "arXiv cs.CL 新论文",
+      "type": "arxiv",
+      "url": "http://export.arxiv.org/api/query?search_query=cat:cs.CL&sortBy=submittedDate&sortOrder=descending&max_results=30",
+      "network": "proxy",
+      "category": "论文速递"
+    }
+  ]
+}

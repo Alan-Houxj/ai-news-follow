@@ -1,0 +1,21 @@
+{
+  "_说明": "复制本文件为 config.json 并填写。每项的获取方式见下方对应 _注释（自包含）；更详细的操作步骤见仓库 docs/setup.md。所有字段也可用同名大写环境变量覆盖（FEISHU_BASE_TOKEN / FEISHU_TABLE_ID / FEISHU_USER_OPEN_ID / FEISHU_ARCHIVE_DOC_ID / FEISHU_ARCHIVE_ANCHOR_BLOCK）。",
+
+  "base_token": "",
+  "_base_token": "多维表格 app_token：打开表格，浏览器地址栏 .../base/ 后面那串（如 QVO5xxxx），?table= 之前",
+
+  "table_id": "",
+  "_table_id": "数据表 table_id：表格地址栏 ?table= 后面那串（以 tbl 开头）；或用 lark-cli base +table-list --base-token <token> 查询",
+
+  "user_open_id": "",
+  "_user_open_id": "接收机器人私聊推送的用户 open_id（ou_ 开头）：lark-cli auth login 成功后输出里有；或 lark-cli whoami",
+
+  "base_url": "",
+  "_base_url": "必填。多维表格的完整链接：打开表格后直接复制浏览器地址栏整条 URL（域名因账号而异，无法自动拼接）",
+
+  "archive_doc_id": "",
+  "_archive_doc_id": "可选，日报归档云文档 token：文档地址栏 .../docx/ 后面那串；不需要归档功能就留空",
+
+  "archive_anchor_block": "",
+  "_archive_anchor_block": "可选，归档插入锚点块 id：文档说明段落块的 id，用 lark-cli docs +fetch --doc <doc> --detail with-ids 查（<p id=\"...\">本文档由...段）；新日报会插在它之后"
+}
