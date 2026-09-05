@@ -89,10 +89,17 @@ python run_daily.py curated.json    # 写表格 + 卡片推送 + 云文档归档
 按顺序执行，每步把产物/链接直接发给用户：
 
 1. **创建应用**：`lark-cli config init --new`（阻塞命令，输出授权链接和二维码）→
-   把链接发给用户点确认。完成后凭证自动保存，应用权限与机器人能力自动就绪
+   把链接发给用户点确认。完成后凭证自动保存；但 bot 身份尚未开通任何 base/im 权限，需第 3 步申请并发布
 2. **用户授权**：`lark-cli auth login --recommend`（同样输出链接/二维码）→
    用户扫码确认，所需权限自动申请自动审批。从输出提取 `ou_` 开头的 open_id
-3. **建表（--as user，表归用户所有）**：
+3. **给应用开通 bot 的 base/im 权限并发布**（漏掉会在最后一步报 access denied）：
+   运行 `lark-cli auth scopes`，输出带一个预填好所需权限的申请链接（console_url），
+   把链接发给用户点开、逐条开通——至少需要 base 字段/记录读写（base:field:read、
+   base:field:update、base:record:create、base:record:read）和 im 发消息
+   （选细粒度 `im:message:send_as_bot`，别选聚合 `im:message`，个人账号开不了）。
+   开通后到开发者后台「版本管理与发布」创建并发布一个版本，权限才生效。
+   可再跑一次 `lark-cli auth scopes` 确认没有剩余待开通项
+4. **建表（--as user，表归用户所有）**：
    ```bash
    lark-cli base +base-create --name "AI资讯库" --table-name "AI日报" --time-zone "Asia/Shanghai" --as user --fields '[
     {"name":"标题","type":"text"},
@@ -106,23 +113,23 @@ python run_daily.py curated.json    # 写表格 + 卡片推送 + 云文档归档
    ]'
    ```
    记下输出里的 `base_token` 和 `url`；再用 `base +table-list --base-token <token> --as user` 取 `table_id`
-4. **把应用授权进表**（bot 后续写入需要）：
+5. **把应用授权进表**（bot 后续写入需要）：
    ```bash
    lark-cli drive +member-add --token <base_token> --type bitable      --member-type appid --member-id <该应用的AppID，形如 cli_xxx> --perm full_access --as user --yes
    ```
    ⚠️ 不要用 bot 身份建表再授用户——新应用 bot 缺 drive 系权限且需发版生效；
    user 建表 + 授权 app 是实测通畅的组合，且表天然归用户所有
-5. **建归档文档**（可选）：
+6. **建归档文档**（可选）：
    ```bash
    lark-cli docs +create --title "AI 日报归档" --content "本文档由 ai-news 技能每日自动维护：最新日报始终在最上方。" --doc-format markdown --as user
    lark-cli docs +fetch --doc <doc_token> --detail with-ids --as user   # 取"本文档由…"段的 <p id="..."> 作锚点
    ```
-6. **写 `scripts/config.json`**：
+7. **写 `scripts/config.json`**：
    ```json
    {"base_token": "…", "table_id": "tbl…", "user_open_id": "ou_…",
     "base_url": "表格完整链接", "archive_doc_id": "…或空", "archive_anchor_block": "…或空"}
    ```
-7. **端到端验证**：`python run_daily.py curated.json`，并告诉用户去飞书查看测试消息
+8. **端到端验证**：`python run_daily.py curated.json`，并告诉用户去飞书查看测试消息
 
 引导失败时：把报错原样告诉用户，指路仓库 `docs/faq.md`，不要自行反复重试。
 

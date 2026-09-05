@@ -39,7 +39,7 @@ export LARK_CLI="C:\Users\<你>\AppData\Roaming\npm\node_modules\@larksuite\cli\
 **原因**：单选/多选字段写入了不在预置选项里的值。飞书的选项字段不接受"随便的新词"。
 
 **解决**：
-- "来源/分类/重要度"三个字段：按 [setup.md](setup.md) 第 ③ 步的建表命令预置选项（命令里已带）
+- "来源/分类/重要度"三个字段：按 [setup.md](setup.md) 第 ④ 步的建表命令预置选项（命令里已带）
 - "标签"字段：无需处理——脚本每次写入前会自动把新标签合并进选项池
 - 自己加了新选项字段：参考 `run_daily.py` 里的 `ensure_tag_options`，或手动去表格界面把选项加上
 
@@ -52,7 +52,7 @@ export LARK_CLI="C:\Users\<你>\AppData\Roaming\npm\node_modules\@larksuite\cli\
 ## 4. app_scope_not_applied 或开权限弹窗报错
 
 **原因分三种**：
-- 应用还没发布过任何版本 → 先去 **版本管理与发布** 发布一版（见 setup.md 第 ② 步）
+- 应用还没发布过任何版本 → 先去 **版本管理与发布** 发布一版（见 setup.md 第 ③ 步）
 - 申请了聚合权限 `im:message`，它捆绑"读全部群消息"等敏感子权限，个人账号开不了，整单失败 → 改用细粒度的 `im:message:send_as_bot`
 - 权限开通了但没发新版 → 再发布一版
 
@@ -88,7 +88,7 @@ export HTTPS_PROXY=http://127.0.0.1:7897   # 换成你的代理端口
 
 ## 8. 云文档归档操作报错
 
-- **插入报层级/结构错误**：归档文档的头部结构被手动改过。按 setup.md 第 ⑤ 步的方式重建一篇，更新 config.json 的两个归档配置项
+- **插入报层级/结构错误**：归档文档的头部结构被手动改过。按 setup.md 第 ⑥ 步的方式重建一篇，更新 config.json 的两个归档配置项
 - **删除块报 "no document changes"**：传了截断的 block id（要用完整 id），或选中的范围里包含没有独立 id 的中间块。单块操作时先 `+fetch --detail with-ids` 拿完整 id
 
 ## 9. 表格推送正常，云文档归档突然失败

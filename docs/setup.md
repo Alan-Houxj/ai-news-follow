@@ -20,8 +20,9 @@ Agent 会按 SKILL.md 的"首次配置引导"依次执行：
 
 1. 发给你一个**创建应用的链接** → 浏览器打开、点一次确认（应用与凭证自动创建保存）
 2. 发给你一个**授权二维码** → 飞书扫码确认（所需权限自动申请自动审批）
-3. 自动建表「AI资讯库 / AI日报」（8 字段、选项全预置）→ 把应用授权进表 → 建归档文档 → 写 `config.json`
-4. 给你的飞书发一条测试消息
+3. 发给你一个**权限申请链接** → 点开逐条开通应用权限（base 读写、im 发消息），再去「版本管理与发布」发布一版
+4. 自动建表「AI资讯库 / AI日报」（8 字段、选项全预置）→ 把应用授权进表 → 建归档文档 → 写 `config.json`
+5. 给你的飞书发一条测试消息
 
 收到测试消息即配置完成。之后对 Agent 说"跑今天的 AI 日报"，日报就会同时写表、推送、归档。
 
@@ -45,7 +46,15 @@ printf '%s' "<AppSecret>" | lark-cli config init --app-id <AppID> --app-secret-s
 lark-cli auth login --recommend
 ```
 
-**③ 建表**（以你自己的身份，表归你所有；整条复制执行）：
+**③ 给应用开通 bot 权限并发布**（漏掉会在最后一步报 access denied，如 `base:field:read`）：
+
+```bash
+lark-cli auth scopes   # 输出带预填好所需权限的申请链接（console_url）
+```
+
+点开 console_url 逐条开通——至少需要 base 字段/记录读写（base:field:read、base:field:update、base:record:create、base:record:read）和 im 发消息（选细粒度 `im:message:send_as_bot`，别选聚合 `im:message`，个人账号开不了）。开通后到「版本管理与发布」创建并发布一个版本，权限才生效。可再跑一次 `lark-cli auth scopes` 确认无剩余待开通项。
+
+**④ 建表**（以你自己的身份，表归你所有；整条复制执行）：
 
 ```bash
 lark-cli base +base-create --name "AI资讯库" --table-name "AI日报" --time-zone "Asia/Shanghai" --as user --fields '[
@@ -60,7 +69,7 @@ lark-cli base +base-create --name "AI资讯库" --table-name "AI日报" --time-z
 ]'
 ```
 
-**④ 把应用授权进表**（技能写入记录走 bot 身份，需要这一步；`--member-id` 填你的 App ID）：
+**⑤ 把应用授权进表**（技能写入记录走 bot 身份，需要这一步；`--member-id` 填你的 App ID）：
 
 ```bash
 lark-cli drive +member-add --token <base_token> --type bitable   --member-type appid --member-id <AppID> --perm full_access --as user --yes
@@ -69,7 +78,7 @@ lark-cli drive +member-add --token <base_token> --type bitable   --member-type a
 > ⚠️ 不要用 `--as bot` 给别人授权——新建应用缺 drive 系 bot 权限且需发版生效，会报 1063003。
 > 也不要漏掉这一步——表是你建的，应用看不到它，写入会报错。
 
-**⑤ 建归档文档**（可选，不要归档功能可跳过）：
+**⑥ 建归档文档**（可选，不要归档功能可跳过）：
 
 ```bash
 lark-cli docs +create --title "AI 日报归档"   --content "本文档由 ai-news 技能每日自动维护：最新日报始终在最上方。"   --doc-format markdown --as user
@@ -78,7 +87,7 @@ lark-cli docs +create --title "AI 日报归档"   --content "本文档由 ai-new
 lark-cli docs +fetch --doc <文档token> --detail with-ids --as user
 ```
 
-**⑥ 写配置文件**：
+**⑦ 写配置文件**：
 
 ```bash
 cd skills/ai-news/scripts
@@ -93,9 +102,9 @@ cp config.example.json config.json
 | `table_id` | 表格网址 `?table=` 后那串（tbl 开头） |
 | `user_open_id` | `lark-cli auth status` 输出里的 ou_ 字符串 |
 | `base_url` | 表格页面地址栏完整复制 |
-| `archive_doc_id` / `archive_anchor_block` | 步骤 ⑤（可选） |
+| `archive_doc_id` / `archive_anchor_block` | 步骤 ⑥（可选） |
 
-**⑦ 验证**：对 Agent 说"跑今天的 AI 日报"，表格、推送、归档三处应同时更新。
+**⑧ 验证**：对 Agent 说"跑今天的 AI 日报"，表格、推送、归档三处应同时更新。
 
 ---
 
