@@ -1,13 +1,21 @@
-# AI 时讯跟进
+<div align="center">
 
-![Agent Skill](https://img.shields.io/badge/Agent_Skill-ai--news-6366f1)
-![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)
-![Feishu](https://img.shields.io/badge/Feishu-%E9%A3%9E%E4%B9%A6-3370FF)
-![License](https://img.shields.io/badge/license-MIT-green)
-![CI](https://img.shields.io/github/actions/workflow/status/Alan-Houxj/ai-news-follow/ci.yml?branch=main)
-![Version](https://img.shields.io/github/v/tag/Alan-Houxj/ai-news-follow)
+<h1>AI 时讯跟进</h1>
 
-**每天早上 8 点，一份帮你筛好、看完就能聊的 AI 日报，自动送到你的飞书。**
+<p><strong>每天早上 8 点，一份帮你筛好、看完就能聊的 AI 日报，自动送到你的飞书。</strong></p>
+
+<p>
+  <img alt="Agent Skill" src="https://img.shields.io/badge/Agent_Skill-ai--news-6366f1">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB">
+  <img alt="Feishu" src="https://img.shields.io/badge/Feishu-%E9%A3%9E%E4%B9%A6-3370FF">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/Alan-Houxj/ai-news-follow/ci.yml?branch=main">
+  <img alt="Version" src="https://img.shields.io/github/v/tag/Alan-Houxj/ai-news-follow">
+</p>
+
+</div>
+
+---
 
 你不是没时间刷新闻，你是没时间在一百条噪音里找出那三条真正重要的事。
 这个工具替你盯着 AI 圈最值得追的源头，把当天发生的事挑出来、讲清楚、附上原文——
