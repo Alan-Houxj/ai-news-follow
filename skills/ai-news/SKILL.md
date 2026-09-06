@@ -137,6 +137,10 @@ python run_daily.py curated.json    # 写表格 + 卡片推送 + 云文档归档
     "base_url": "表格完整链接", "archive_doc_id": "…或空", "archive_anchor_block": "…或空"}
    ```
 8. **端到端验证**：`python run_daily.py curated.json`，并告诉用户去飞书查看测试消息
+9. **引导定时（重要，别漏）**：验证成功后主动问用户——"要不要设置每天早上 8 点自动推送？"
+   - 用户同意 → 按当前 Agent 宿主的方式创建定时任务（ZCode 用 CronCreate 建 `0 8 * * *`，
+     prompt 为"按 ai-news 技能完整执行今日 AI 日报流程"；其他宿主见仓库 `docs/scheduling.md`）
+   - 用户拒绝 → 不追问，告知随时可以再说一声设置
 
 引导失败时：把报错原样告诉用户，指路仓库 `docs/faq.md`，不要自行反复重试。
 
@@ -176,4 +180,4 @@ python run_daily.py curated.json    # 写表格 + 卡片推送 + 云文档归档
 
 ## 定时执行
 
-技能无状态，任意调度器可调。推荐每天 08:00（Asia/Shanghai）。各宿主配置方式见仓库 `docs/scheduling.md`，prompt 模板就是一句话："按 ai-news 技能完整执行今日 AI 日报流程"。
+技能无状态，任意调度器可调，推荐每天 08:00（Asia/Shanghai）。**用户表达"每天自动 / 定时推送"意图时，主动帮他配好**：ZCode 宿主直接用 CronCreate 建 `0 8 * * *`（prompt："按 ai-news 技能完整执行今日 AI 日报流程"）；其他宿主的方式见仓库 `docs/scheduling.md`。定时触发与对话触发走的是同一套本文件流程。
